@@ -1,26 +1,28 @@
 import * as dgram from 'dgram';
+import type { Socket } from 'dgram';
 
 const UDP_IP = "0.0.0.0";
 const UDP_PORT = 20002;
 
+export class Server {
+    socket: Socket;
+    server: any;
+    constructor() {
+        this.socket = dgram.createSocket("udp4");
+    }
 
-
-export const server = () => {
-    
-    const server = dgram.createSocket("udp4");
-    
-    server.bind({
+   public init () {
+    const server = this.socket.bind({
         port: UDP_PORT,
         address: UDP_IP,
     });
-    
+
     server.on("listening", () => {
-        console.log("Waiting for Switcher Response");
-    })
-    
-    server.on("message", (message, rinfo) => {
-        process.stdout.write("UDP String: " + message + "\n");
-        process.stdout.write("server info" + rinfo.address);
+        process.stdout.write("Listening to Incoming Connections");
     });
-    
+
+    server.on("error", (error) => {
+        process.stdout.write("Connection Listening Failed" + error);
+    })
+   }
 }

@@ -1,5 +1,6 @@
-import {server} from './utils/network';
+import {Server} from './utils/network';
+
+const server = new Server();
 
 
-
-server();
+server.init();
